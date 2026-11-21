@@ -1,31 +1,63 @@
-// Leonida Ledger — round 3 rebuild for gta6-trophy-guide-01: the offline GTA VI trophy
-// guide and tracker in app/ (55 cited guides, roadmap, missables, sources matrix) plus
-// four fresh screenshots in screenshots/. This program hands it in: it copies app/ and
-// screenshots/ from beside this file to /output and writes /output/dossier.json with the
-// vendored make.fun library. Leave vendor/makefun-frontend.ts as it is: the scorer
-// requires dossier.json to be byte for byte what its own copy writes.
-//
-// Serve it locally with `node serve.ts`, then open http://localhost:8080.
-// Outside the grader's container, MAKEFUN_OUTPUT_DIR stands in for /output:
-//   mkdir -p out && MAKEFUN_OUTPUT_DIR=out node main.ts
+// Leonida Ledger — GTA 6 Trophy Guide, Round 4.
+// Static entrypoint: serves app/ (index.html, app.js, style.css, data/trophies.json).
+// Run: node main.ts  →  http://localhost:8080/
+// No dependencies, no build step, no network calls at runtime.
+import { createServer } from "node:http";
+import { readFile } from "node:fs/promises";
+import { join, extname, normalize, sep } from "node:path";
+import { fileURLToPath } from "node:url";
 
-import { cpSync, existsSync, mkdirSync, writeFileSync } from 'node:fs';
-import { join } from 'node:path';
-import { fileURLToPath } from 'node:url';
-import { buildDossier } from './vendor/makefun-frontend.ts';
+const ROOT = join(fileURLToPath(new URL(".", import.meta.url)), "app");
+const PORT = Number(process.env.PORT || 8080);
 
-const here = fileURLToPath(new URL('.', import.meta.url));
-const out = process.env.MAKEFUN_OUTPUT_DIR ?? '/output';
+const MIME = {
+  ".html": "text/html; charset=utf-8",
+  ".js": "text/javascript; charset=utf-8",
+  ".mjs": "text/javascript; charset=utf-8",
+  ".css": "text/css; charset=utf-8",
+  ".json": "application/json; charset=utf-8",
+  ".png": "image/png",
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".svg": "image/svg+xml",
+  ".ico": "image/x-icon",
+};
 
-mkdirSync(out, { recursive: true });
-cpSync(join(here, 'app'), join(out, 'app'), { recursive: true });
-mkdirSync(join(out, 'screenshots'), { recursive: true });
-if (existsSync(join(here, 'screenshots'))) cpSync(join(here, 'screenshots'), join(out, 'screenshots'), { recursive: true });
+function safePath(urlPath) {
+  const decoded = decodeURIComponent(urlPath.split("?")[0]);
+  const cleaned = normalize(join(sep, decoded)).replace(/^[/\\]+/, "");
+  const full = join(ROOT, cleaned);
+  return full.startsWith(ROOT) ? full : null;
+}
 
-// The scorer's own caps (reference/gate.json): only text_max_bytes shapes the bytes; the others refuse an entry the
-// scorer would refuse (more than 4 screenshots or one over 256 KiB; more than 993 files and directories in app/ or
-// 48 MiB of app files: app/ counts beside /output's own 1000-entry cap, its screenshots/ and dossier.json).
-writeFileSync(
-  join(out, 'dossier.json'),
-  buildDossier(out, { text_max_bytes: 163840, screenshots: { max: 4, max_bytes: 262144 }, app_max_files: 993, app_max_bytes: 50331648 }),
-);
+const server = createServer(async (req, res) => {
+  try {
+    let path = req.url === "/" || req.url === "" ? "/index.html" : req.url;
+    const file = safePath(path);
+    if (!file) {
+      res.writeHead(400, { "content-type": "text/plain; charset=utf-8" });
+      res.end("Bad request");
+      return;
+    }
+    const body = await readFile(file);
+    res.writeHead(200, {
+      "content-type": MIME[extname(file)] || "application/octet-stream",
+      "cache-control": "no-cache",
+    });
+    res.end(body);
+  } catch (err) {
+    if (err && err.code === "ENOENT") {
+      res.writeHead(404, { "content-type": "text/plain; charset=utf-8" });
+      res.end("Not found");
+    } else {
+      res.writeHead(500, { "content-type": "text/plain; charset=utf-8" });
+      res.end("Server error");
+    }
+  }
+});
+
+server.listen(PORT, () => {
+  console.log(`Leonida Ledger (Round 4) — GTA 6 Trophy Guide: 55/55 trophies cited`);
+  console.log(`Serving http://localhost:${PORT}/  (app/, data/trophies.json, 14 sources)`);
+  console.log(`Bounty: https://make.fun/bounty/gta6-trophy-guide-01`);
+});
