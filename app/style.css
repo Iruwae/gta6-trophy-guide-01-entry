@@ -1,7 +1,151 @@
-body { font-family: Arial, sans-serif; margin: 24px; color: #222; }
-header { display: flex; justify-content: space-between; align-items: baseline; }
-.controls { display: flex; gap: 16px; margin: 12px 0; align-items: center; }
-.import input { font-size: 12px; }
-table { border-collapse: collapse; width: 100%; }
-th, td { border-bottom: 1px solid #ddd; padding: 6px 8px; text-align: left; vertical-align: top; white-space: pre-line; }
-th { background: #f2f2f2; }
+/* Leonida Ledger — original Vice City neon-sunset look. No official artwork. */
+:root {
+  --ink: #1d1030;
+  --paper: #fff7ee;
+  --panel: #ffffff;
+  --pink: #ff2e88;
+  --orange: #ff7a1a;
+  --purple: #6c2bd9;
+  --teal: #0fb5a8;
+  --gold: #c98a00;
+  --muted: #6b5a7a;
+  --line: #e8d5ef;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  font-family: "Segoe UI", system-ui, -apple-system, Arial, sans-serif;
+  background: var(--paper);
+  color: var(--ink);
+  line-height: 1.5;
+}
+.hero {
+  padding: 28px 20px 22px;
+  color: #fff;
+  background: linear-gradient(135deg, #2a0a4a 0%, #7b1e6e 45%, #ff2e88 70%, #ff7a1a 100%);
+}
+.hero h1 {
+  margin: 4px 0 6px;
+  font-size: 44px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+.kicker { margin: 0; font-size: 13px; letter-spacing: 2px; text-transform: uppercase; opacity: .9; }
+.tagline { margin: 0 0 12px; font-size: 17px; max-width: 720px; }
+.audit {
+  display: inline-block;
+  margin: 6px 0 0;
+  padding: 6px 10px;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, .35);
+  color: #ffe9f3;
+  font-size: 13px;
+  font-weight: 600;
+}
+section .audit { background: #2a0a4a; }
+.tabs {
+  display: flex;
+  gap: 4px;
+  padding: 0 16px;
+  background: #2a0a4a;
+  position: sticky;
+  top: 0;
+  z-index: 5;
+}
+.tabs a {
+  padding: 12px 18px;
+  color: #ffd7ea;
+  text-decoration: none;
+  font-weight: 700;
+  border-bottom: 3px solid transparent;
+}
+.tabs a.active { color: #fff; border-bottom-color: var(--orange); background: rgba(255, 255, 255, .08); }
+main { max-width: 1060px; margin: 0 auto; padding: 18px 16px 40px; }
+h2 { font-size: 26px; margin: 10px 0; }
+h3 { font-size: 19px; margin: 22px 0 8px; }
+.progress-wrap { margin: 14px 0; }
+.progress-bar { height: 18px; background: #ead9f2; border-radius: 9px; overflow: hidden; }
+#progress-fill { height: 100%; width: 0%; background: linear-gradient(90deg, var(--teal), var(--pink)); }
+#progress-text { font-size: 20px; font-weight: 800; margin: 8px 0 0; }
+.note { color: var(--muted); font-size: 13px; }
+.controls { display: flex; flex-wrap: wrap; gap: 12px; align-items: end; margin: 14px 0; }
+.controls input[type="search"] { flex: 1 1 260px; padding: 10px; font-size: 15px; border: 2px solid var(--line); border-radius: 8px; }
+.controls select { padding: 9px; font-size: 14px; border: 2px solid var(--line); border-radius: 8px; background: #fff; }
+.controls label { font-weight: 700; font-size: 13px; }
+.controls label.check { display: flex; gap: 6px; align-items: center; font-weight: 600; }
+.actions { display: flex; flex-wrap: wrap; gap: 10px; margin: 10px 0 16px; }
+button, .import-btn {
+  padding: 10px 14px;
+  font-size: 14px;
+  font-weight: 700;
+  border: 0;
+  border-radius: 8px;
+  cursor: pointer;
+  background: var(--purple);
+  color: #fff;
+}
+button:hover, .import-btn:hover { background: var(--pink); }
+.import-btn input { display: none; }
+#reset { background: #8a7a99; }
+table { width: 100%; border-collapse: collapse; background: var(--panel); }
+th, td { text-align: left; padding: 9px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: #2a0a4a; color: #fff; font-size: 13px; }
+td input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--pink); cursor: pointer; }
+tr.earned td { background: #eafaf7; }
+tr.selected td { background: #fff0d6; }
+.badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 800;
+  color: #fff;
+  text-transform: capitalize;
+}
+.badge.platinum { background: #7b5cff; }
+.badge.gold { background: var(--gold); }
+.badge.silver { background: #8a97a5; }
+.badge.bronze { background: #b06a2a; }
+.tag {
+  display: inline-block;
+  margin: 2px 3px 0 0;
+  padding: 1px 7px;
+  border-radius: 12px;
+  font-size: 11px;
+  font-weight: 700;
+  background: #f3e4fa;
+  color: var(--purple);
+}
+.tag.warn { background: #ffe3ee; color: #b3004d; }
+.tag.disputed { background: #fff3d6; color: #7a5200; }
+.guide-panel {
+  border: 3px solid var(--pink);
+  border-radius: 12px;
+  padding: 16px 18px;
+  margin: 12px 0;
+  background: #fff;
+}
+.guide-panel h3 { margin-top: 0; font-size: 21px; }
+.guide-panel .cite { font-size: 14px; }
+.guide-panel a { color: var(--purple); }
+.cite a { color: var(--purple); }
+.roadmap { padding-left: 22px; }
+.roadmap li { margin: 12px 0; }
+.roadmap strong { color: var(--purple); }
+.missable-card {
+  border: 3px solid var(--orange);
+  border-radius: 12px;
+  padding: 16px 18px;
+  background: #fff8f0;
+}
+.source-list li { margin: 8px 0; }
+.matrix-wrap { overflow-x: auto; }
+.matrix { font-size: 12px; }
+.matrix th, .matrix td { padding: 4px 6px; text-align: center; }
+.matrix td:first-child, .matrix th:first-child { text-align: left; }
+.matrix .hit { background: var(--teal); color: #fff; font-weight: 800; }
+footer { max-width: 1060px; margin: 0 auto; padding: 0 16px 30px; color: var(--muted); font-size: 13px; }
+@media (max-width: 640px) {
+  .hero h1 { font-size: 30px; }
+  .tabs a { padding: 10px 10px; font-size: 14px; }
+}
