@@ -4,7 +4,7 @@
 [![rank](https://make.fun/badge/gta6-trophy-guide-01/Iruwae/gta6-trophy-guide-01-entry/rank.svg)](https://make.fun/bounty/gta6-trophy-guide-01)
 [![reward](https://make.fun/badge/gta6-trophy-guide-01/Iruwae/gta6-trophy-guide-01-entry/reward.svg)](https://make.fun/bounty/gta6-trophy-guide-01)
 
-Leonida Ledger is an offline, static web app that guides you to the Grand Theft Auto VI platinum on PlayStation 5: all 55 official trophies with their PlayStation names, descriptions and grades, a guide in our own words for every single one with named sources and links, a missable-first roadmap (the Chapter 1 meditation comes before anything else), and a tracker that saves your progress in the browser, with search, kind and grade filters, a spoiler shield for story trophies, and export/import. Everything runs from local files with the network off, and every claim that is still unconfirmed — six trophies whose methods the guides have not verified yet — is flagged honestly instead of presented as fact.
+Leonida Ledger is an offline guide and tracker for all 55 PlayStation 5 trophies of Grand Theft Auto VI: every trophy carries its official name, description and grade plus a guide written for this entry that cites its sources, a roadmap to the platinum ordered missable-first, a spoiler shield that hides story trophies until they are earned, and a checklist whose progress is saved in the browser and can be exported and imported. The audit strip on every tab reads 55/55 official names · 1P 2G 6S 46B · 28 PSN-hidden · 55/55 guides cited · sources read 21 Nov 2026 · 1 possibly missable — because there is exactly one: Positive Mental Attitude, and the guide tells you to do its Chapter 1 meditation first, before it can be missed.
 
 ## Run it
 
@@ -12,22 +12,13 @@ Leonida Ledger is an offline, static web app that guides you to the Grand Theft 
 node serve.ts
 ```
 
-Then open http://localhost:8080 — or serve `app/` with any static server, for example `python3 -m http.server` from inside `app/`.
+Then open http://localhost:8080. The app is plain static files under `app/` with no build step and no network at runtime — the only file it fetches is its own `app/data/trophies.json`.
 
-## What's inside
+## Tabs
 
-- `app/index.html`, `app/app.js`, `app/style.css` — the guide and tracker (Tracker, Roadmap, Missables, Sources tabs).
-- `app/data/trophies.json` — all 55 official trophies: name, description, grade, PSN-hidden flag, kind, missable flag, disputed flag, roadmap stage, guide and sources.
-- `screenshots/` — four real renders of the app in a browser: the tracker with demo progress and a guide open, the roadmap, the missables tab, and the sources tab.
-- `main.ts` — hands the entry in: copies `app/` and `screenshots/` to `/output` and writes `/output/dossier.json`.
+- **Tracker** — the full checklist with search, kind and grade filters, PSN-hidden / disputed / not-earned filters, spoiler shield, export/import, clear, and a demo-progress loader. Click any trophy to open its guide with citations.
+- **Roadmap** — six stages to the platinum: the one possibly missable trophy first (Chapter 1), then the story, stranger strands, collectibles, activities, and the 100% cleanup.
+- **Missables** — the one possibly missable trophy in full, plus the missable content that does *not* affect any trophy.
+- **Sources** — every source with its link, the read date (21 Nov 2026), and a Trophy × Source matrix showing which sources each guide cites.
 
-## Facts, honestly stated
-
-- 55 trophies: 1 platinum, 2 gold, 6 silver, 46 bronze; 28 hidden on PSN.
-- All offline, single-player; one playthrough is enough; no online trophies.
-- Only one possibly missable trophy: Positive Mental Attitude (meditate at all 18 spots — do the Chapter 1 Lucia meditation first).
-- Sources read 21 Nov 2026. The game is days old: methods may change as players confirm more.
-
----
-
-Built for [make.fun](https://make.fun/bounty/gta6-trophy-guide-01) — bounty gta6-trophy-guide-01, ref 817k0hr2.
+*Built for the make.fun bounty [gta6-trophy-guide-01](https://make.fun/bounty/gta6-trophy-guide-01) — ref 817k0hr2.*
