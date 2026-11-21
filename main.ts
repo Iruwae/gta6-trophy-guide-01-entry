@@ -1,6 +1,5 @@
-// Leonida Ledger handoff: this entry is the GTA VI trophy guide + tracker built
-// in the recorded builder session — 55 cited guides, roadmap ordered by missable
-// risk first, localStorage tracker with export/import, and 4 screenshots.
+// Leonida Ledger — a GTA VI trophy guide & tracker entry for make.fun (gta6-trophy-guide-01): it hands in
+// app/ (the offline guide) and screenshots/ (four real renders) plus the dossier the judge reads.
 // A working gta6-trophy-guide-01 entry (Node 22, standard library only): the guide is this directory's app/ folder,
 // plain static files a browser opens at app/index.html (ES modules, CSS, no build step), offline: it loads nothing
 // over the network, and its trophy list and guides are app/data/trophies.json. The program hands it in: it copies app/

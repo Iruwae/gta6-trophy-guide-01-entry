@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="utf-8">
@@ -8,113 +8,134 @@
 </head>
 <body>
 <header class="hero">
-  <p class="kicker">Grand Theft Auto VI &middot; PlayStation 5 &middot; Leonida</p>
   <h1>Leonida Ledger</h1>
-  <p class="tagline">Every one of the 55 trophies — a guide, a roadmap, and a tracker that remembers where you are.</p>
-  <p class="audit" id="audit">55/55 official names &middot; 1P 2G 6S 46B &middot; 28 PSN-hidden &middot; 55/55 guides cited &middot; sources read 21 Nov 2026 &middot; 1 possibly missable</p>
+  <p class="sub">The complete offline guide &amp; tracker for all 55 Grand Theft Auto VI trophies on PlayStation 5.</p>
+  <div class="audit-strip" id="auditStrip">55/55 official names · 1P 2G 6S 46B · 28 PSN-hidden · 55/55 guides cited · sources read 21 Nov 2026 · 1 possibly missable</div>
 </header>
-<nav class="tabs" aria-label="Sections">
+<nav class="tabs" aria-label="Guide sections">
   <a href="#tracker" data-tab="tracker">Tracker</a>
   <a href="#roadmap" data-tab="roadmap">Roadmap</a>
   <a href="#missables" data-tab="missables">Missables</a>
   <a href="#sources" data-tab="sources">Sources</a>
 </nav>
-
 <main>
-<section id="tab-tracker" class="tab" aria-label="Tracker">
-  <p class="audit">55/55 official names &middot; 1P 2G 6S 46B &middot; 28 PSN-hidden &middot; 55/55 guides cited &middot; sources read 21 Nov 2026 &middot; 1 possibly missable</p>
-  <div class="progress-wrap">
-    <div class="progress-bar"><div id="progress-fill"></div></div>
-    <p id="progress-text">0 of 55 earned</p>
-    <p class="note">Progress is saved in this browser (localStorage). Nothing leaves your machine.</p>
-  </div>
-  <div class="controls">
-    <input id="search" type="search" placeholder="Search trophies by name or description&hellip;" aria-label="Search trophies">
-    <label>Kind
-      <select id="filter-kind">
-        <option value="all">All kinds</option>
+  <section class="tab" id="tab-tracker">
+    <h2>Trophy Tracker</h2>
+    <p class="lede">Every official trophy with its PlayStation name, description and grade. Tick off earned ones — progress saves in this browser, works offline, and exports or imports.</p>
+    <div class="progress"><div class="bar"><i id="progressFill" style="width:0%"></i></div><p id="progressText">0 of 55 earned · 0%</p></div>
+    <div class="toolbar">
+      <input type="search" id="searchBox" placeholder="Search trophies, descriptions, guides…" aria-label="Search trophies">
+      <select id="kindFilter" aria-label="Filter by kind">
+        <option value="">All kinds</option>
         <option value="story">Story</option>
         <option value="missable">Missable</option>
         <option value="collectibles">Collectibles</option>
         <option value="activities">Activities</option>
-        <option value="hidden">PSN-hidden</option>
-        <option value="disputed">Disputed / unconfirmed</option>
-        <option value="not-earned">Not earned yet</option>
       </select>
-    </label>
-    <label>Grade
-      <select id="filter-grade">
-        <option value="all">All grades</option>
+      <select id="gradeFilter" aria-label="Filter by grade">
+        <option value="">All grades</option>
         <option value="platinum">Platinum</option>
         <option value="gold">Gold</option>
         <option value="silver">Silver</option>
         <option value="bronze">Bronze</option>
       </select>
-    </label>
-    <label class="check"><input id="spoiler" type="checkbox"> Spoiler shield — hide story trophy names &amp; descriptions until earned</label>
-  </div>
-  <div class="actions">
-    <button id="export" type="button">Export progress to file</button>
-    <label class="import-btn">Import progress <input id="import" type="file" accept="application/json"></label>
-    <button id="demo" type="button">Load demo progress</button>
-    <button id="reset" type="button">Clear progress</button>
-  </div>
-  <div id="guide-panel" class="guide-panel" hidden></div>
-  <p id="result-count" class="note"></p>
-  <table>
-    <thead><tr><th>Earned</th><th>Trophy</th><th>Grade</th><th>Guide (click a trophy to read it)</th></tr></thead>
-    <tbody id="rows"></tbody>
-  </table>
-</section>
+      <select id="stateFilter" aria-label="Filter by state">
+        <option value="">All trophies</option>
+        <option value="earned">Earned</option>
+        <option value="not-earned">Not earned</option>
+        <option value="hidden">PSN-hidden</option>
+        <option value="disputed">Disputed / unconfirmed</option>
+      </select>
+    </div>
+    <div class="toolbar">
+      <label><input type="checkbox" id="spoilerToggle" checked> Spoiler shield — hide story trophy names &amp; descriptions until earned</label>
+    </div>
+    <div class="toolbar">
+      <button type="button" id="exportBtn">Export progress to file</button>
+      <button type="button" id="importBtn">Import progress</button>
+      <input type="file" id="importFile" accept="application/json,.json" hidden>
+      <button type="button" id="demoBtn">Load demo progress</button>
+      <button type="button" id="clearBtn">Clear progress</button>
+    </div>
+    <p class="spoiler-note" id="spoilerNote">Spoiler shield is ON: story trophies you have not earned show as hidden until you tick them.</p>
+    <ul class="trophy-list" id="trophyList"></ul>
+  </section>
 
-<section id="tab-roadmap" class="tab" aria-label="Roadmap" hidden>
-  <p class="audit">55/55 official names &middot; 1P 2G 6S 46B &middot; 28 PSN-hidden &middot; 55/55 guides cited &middot; sources read 21 Nov 2026 &middot; 1 possibly missable</p>
-  <h2>Roadmap to the platinum — about 200 hours</h2>
-  <p>One playthrough is enough. All 55 trophies are offline and single-player, there is no mission replay and no gold medals, and free-roam continues after the story with everything for 100% still accessible. The order below is built from the official descriptions: missable risk first, then story, then strangers, then collectibles, then activities, then cleanup. Cheats disable trophies and saving — do not use them.</p>
-  <ol class="roadmap" id="roadmap-list"></ol>
-  <h3>Chapter-by-chapter notes</h3>
-  <ul>
-    <li><strong>Chapter 1 — do the meditation first.</strong> After the mission Down to Earth, talk to Lucia in the kitchen in the morning, follow her to the balcony and accept. It is the only step in the whole list that may not come back.</li>
-    <li><strong>Chapters 1–4 — play the story, sample the world.</strong> Try a few activities as they appear (Master of None needs nine types), start discovering vehicles, and pick up Stranger strands when their icons appear. Nothing here is missable except the Chapter 1 meditation.</li>
-    <li><strong>Chapter 5 — finish the story.</strong> The final mission pops the gold trophy You Gotta Know When to Get Off. The 100% completion checklist becomes viewable after the story.</li>
-    <li><strong>Free-roam cleanup — strangers, then collectibles, then activities.</strong> Finish the eight Stranger strands, sweep the 52 areas, 100 WAiNK locations, card sets and 100 vehicles, then grind stunts (250), the Shooting Range golds (42), races and the money trophies. A Long Road (100%) is usually the last trophy before the platinum.</li>
-  </ul>
-</section>
+  <section class="tab" id="tab-roadmap">
+    <h2>Roadmap to the Platinum</h2>
+    <p class="lede">One playthrough is enough — there are no online trophies, no mission replay and no gold medals. Difficulty about 4/10, roughly 200 hours. Follow the stages in order; the only thing you must do early is the Chapter 1 meditation.</p>
+    <div class="stage"><h3>Stage 1 — Do first, Chapter 1: Positive Mental Attitude</h3>
+      <p class="when">Chapter 1, right after the main mission “Down to Earth”.</p>
+      <p>After “Down to Earth”, talk to Lucia in the kitchen in the morning. She says she will meditate and walks to the balcony — follow her and choose “Accept”. This is the only possibly missable trophy in the game: it adds +1 to the Progress Menu counter but is not marked as a Meditation Spot like the rest, and it is unconfirmed whether it is required. PowerPyx's author did it and then earned the trophy — so do it. It costs one minute and protects the platinum.</p></div>
+    <div class="stage"><h3>Stage 2 — The story: chapters 1–5</h3>
+      <p class="when">60–80 hours of story; free-roam continues after the finale.</p>
+      <p>Play the main missions straight through. All 12 story trophies (chapters, Gone Fishing, Breakfast Run, The Cartel Heist, Child's Play, Headliners, VCIA Takedown, Operation Savage Glory, the final mission) unlock automatically and cannot be missed. Sample activities as you go so Master of None ticks over, and bank stunts, races and collectibles you pass — but nothing story-related can lock you out.</p></div>
+    <div class="stage"><h3>Stage 3 — Stranger strands</h3>
+      <p class="when">Unlocks with story progress; quest givers return in free-roam.</p>
+      <p>Finish the five named stranger finals — Andy (Road to Rehabilitation, ending “Puff Puff Pass”), Kenton (This Was No Boat Accident), Billy (The Lone Rider), Randy (Supply &amp; Demand) and Tyrone (Spin On This!) — plus three more stranger strands to reach 8 for Strangers &amp; Freaks. Hunt Bret's unique animal for Fair Game while you are out. Stranger mission chains have windows tied to story progress, but all trophy-related givers return in free-roam, so none of this is missable.</p></div>
+    <div class="stage"><h3>Stage 4 — Collectibles</h3>
+      <p class="when">Best done region by region, alongside exploration.</p>
+      <ul>
+        <li>Meditate at every spot (18) — Positive Mental Attitude, started in Stage 1.</li>
+        <li>Complete 3 Collectible Card sets — Don't Touch My Deck.</li>
+        <li>WAiNK It at 100 locations — You WAiNKer!</li>
+        <li>Explore all 52 areas of Leonida — The Goodtime State.</li>
+        <li>Discover 100 vehicles — Whip It Good; register 10 in the Scooter Bros app — On the Spot.</li>
+        <li>Buy all 8 garage properties — Little Boxes.</li>
+      </ul></div>
+    <div class="stage"><h3>Stage 5 — Activities &amp; grind</h3>
+      <p class="when">Free-roam, any order.</p>
+      <ul>
+        <li>250 unique stunts (Cunning Stunts) · gold all 42 Shooting Range challenges (The Shootist) · win a Top Fun Drone Race at all 14 locations (Top Fun) · win 20 different races (Earn Cash, Not Kudos).</li>
+        <li>Beat Cal at fishing, finish an arcade game, go bowling at Kolt &amp; Associates, max strength with both Jason and Lucia (Personal Best).</li>
+        <li>Rob 5 bank vaults, an armored truck, 3 shops back-to-back with your partner, and one illegal operation per gang (9 gangs) — plus the 4-star wanted escape with your partner, the stealth jewelry robbery, 5 takedowns in one Combat Focus, and the unscheduled VCIA departure.</li>
+        <li>Launder $250,000 in Marked Bills (Dime on the Dollar) and spend $100,000 in shops (Treat Yo Self).</li>
+        <li>Complete 50 of the 80 challenges (One Last Thing) — most finish themselves while you chase the rest.</li>
+      </ul></div>
+    <div class="stage"><h3>Stage 6 — Cleanup &amp; the unconfirmed five</h3>
+      <p class="when">After the story, when the 100% checklist becomes viewable.</p>
+      <p>Open the completion checklist and mop up whatever categories are short — that is A Long Road (100%), the longest grind and the hardest trophy. Then try the five trophies whose methods are still unconfirmed (In The Beginning…, Capital Offense, Bad Luck I Guess, The Truth Is Out There, Ten Pin) and check the guides' updates before trusting any single reported trick. When the last trophy pops, the platinum — Vice Got a Price! — is yours.</p></div>
+  </section>
 
-<section id="tab-missables" class="tab" aria-label="Missables" hidden>
-  <p class="audit">55/55 official names &middot; 1P 2G 6S 46B &middot; 28 PSN-hidden &middot; 55/55 guides cited &middot; sources read 21 Nov 2026 &middot; 1 possibly missable</p>
-  <h2>Missables — only one trophy carries any risk</h2>
-  <article class="missable-card">
-    <h3>Positive Mental Attitude — meditate at every spot (18 spots)</h3>
-    <p><strong>Do it first, in Chapter 1.</strong> After the main mission Down to Earth, talk to Lucia in the kitchen in the morning. She says she will meditate and goes to the balcony — follow her and choose <em>Accept</em>. That moment adds +1 to the Progress Menu counter, but it is <strong>not</strong> marked as a Meditation Spot like the other 17 spots are.</p>
-    <p><strong>Why it matters:</strong> it is unconfirmed whether that Chapter 1 meditation is required for the trophy. PowerPyx's author did it and then earned the trophy; no guide has confirmed earning the trophy without it. Our call: do it in Chapter 1, then meditate at every marked spot you find afterwards.</p>
-    <p><strong>Last chance:</strong> Chapter 1 only — the kitchen moment happens once, in the morning after Down to Earth. Everything else in the game can be done in free-roam after the story.</p>
-    <p class="cite">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/">PowerPyx — GTA 6 Trophy Guide &amp; Roadmap</a> &middot; <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/">KeenGamer — GTA 6 Trophy Guide &amp; Platinum Roadmap</a></p>
-  </article>
-  <h3>Stranger strands — windows, but no lockout</h3>
-  <p>Stranger mission chains have windows tied to story progress, but every trophy-related quest giver returns in free-roam. If a strand icon disappears mid-story, it comes back after the story — finish it then.</p>
-  <h3>Missable content that does NOT affect any trophy</h3>
-  <ul>
-    <li>Optional missions that disappear (black icons, pink letters) — none blocks a trophy or 100%.</li>
-    <li>Some fences becoming permanently unavailable — no trophy needs them.</li>
-    <li>A few magazines in story buildings that close later — not part of any trophy or the 100% checklist.</li>
-  </ul>
-  <p class="cite">Sources: <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/">PowerPyx</a> &middot; <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/">KeenGamer</a></p>
-</section>
+  <section class="tab" id="tab-missables">
+    <h2>Missables</h2>
+    <p class="lede">Good news first: only one trophy in the whole game can possibly be missed — and even it is unconfirmed. Everything else stays available in free-roam after the story.</p>
+    <div class="callout"><h3>⚠ The one possibly missable trophy — Positive Mental Attitude (Bronze)</h3>
+      <p><strong>What:</strong> Meditate at every spot across Leonida (18 spots).</p>
+      <p><strong>Why it might be missable:</strong> In Chapter 1, after the main mission “Down to Earth”, talk to Lucia in the kitchen in the morning. She says she will meditate and goes to the balcony — follow her and choose “Accept”. That session adds +1 to the Progress Menu counter, but it is NOT marked as a “Meditation Spot” like the rest, and it is unconfirmed whether it counts toward the trophy.</p>
+      <p><strong>Our call:</strong> DO IT in Chapter 1. PowerPyx's author did it and then earned the trophy. It takes one minute; skipping it risks the whole platinum. Then meditate at every marked spot in the world. If you are already past Chapter 1, do not panic — the requirement is unconfirmed, and the other 17+ spots may be enough. Check the guide's updates as players confirm more.</p>
+      <p><strong>Sources:</strong> <a href="https://www.powerpyx.com/gta-6-grand-theft-auto-vi-trophy-guide-roadmap/">PowerPyx — GTA 6 Trophy Guide &amp; Roadmap</a> · <a href="https://www.keengamer.com/articles/guides/gta-6-trophy-guide-platinum-roadmap-all-55-trophies/">KeenGamer — GTA 6 Trophy Guide &amp; Platinum Roadmap</a></p></div>
+    <div class="stage"><h3>Missable content that does NOT affect any trophy</h3>
+      <p>These can disappear permanently, but none of them blocks a trophy or 100% completion:</p>
+      <ul>
+        <li>Optional missions that vanish (black icons, pink letters).</li>
+        <li>Some fences becoming permanently unavailable.</li>
+        <li>A few magazines inside story buildings that later close.</li>
+      </ul>
+      <p class="when">Source: PowerPyx. You can safely ignore all of it on the road to the platinum.</p></div>
+    <div class="stage"><h3>Things that are NOT missable (despite looking like it)</h3>
+      <ul>
+        <li>All 12 story trophies — the story is linear and free-roam continues after the finale.</li>
+        <li>All five stranger strands — quest givers return in free-roam even though their chains have story-tied windows.</li>
+        <li>Every collectible and activity — all still accessible after the story; the 100% checklist only becomes viewable after it, but progress made during the story counts.</li>
+      </ul></div>
+  </section>
 
-<section id="tab-sources" class="tab" aria-label="Sources" hidden>
-  <p class="audit">55/55 official names &middot; 1P 2G 6S 46B &middot; 28 PSN-hidden &middot; 55/55 guides cited &middot; sources read 21 Nov 2026 &middot; 1 possibly missable</p>
-  <h2>Sources — read 21 Nov 2026</h2>
-  <p>Every trophy's guide in this ledger cites its sources by name and link, in our own words — never copied from another guide. The official names and descriptions are quoted as PlayStation publishes them (Exophase and PSNProfiles agree on all 55). The game released 19 Nov 2026 and the trophy list was first published 18 Nov 2026, so methods for the newest trophies are still being confirmed; disputed ones say so in their guide.</p>
-  <ol id="source-list" class="source-list"></ol>
-  <h3>Trophy &times; Source matrix</h3>
-  <p class="note">Each row is a trophy; a filled cell means that source is cited for that trophy's guide. PowerPyx and KeenGamer anchor most guides; the other guides cross-check the list and the methods.</p>
-  <div class="matrix-wrap"><table id="matrix" class="matrix"></table></div>
-</section>
+  <section class="tab" id="tab-sources">
+    <h2>Sources</h2>
+    <p class="lede">Every guide in this app is written in our own words and cites its sources by name and link. Sources read 21 Nov 2026. The game released 19 Nov 2026 and the trophy list was first published 18 Nov 2026 — methods may change as players confirm more, and the six disputed trophies are flagged wherever they appear.</p>
+    <p class="lede">Official list: the 55 trophies as Exophase and PSNProfiles listed them before this bounty opened — the two agree on every name, description and grade. PSN hides 28 of the 55 until earned; the starter list carries no hidden flags, so this entry assigns hidden status from the guides' facts (story and mission trophies plus spoiler-heavy ones) and says so honestly here.</p>
+    <ul class="source-list" id="sourceList"></ul>
+    <div class="matrix">
+      <h3>Trophy × Source matrix</h3>
+      <p class="lede">Which sources each trophy's guide cites. “PP” = PowerPyx, “KG” = KeenGamer, “PG” = PlanetGTA6, “GF” = GamesFuze, “GS” = GTAScoop, “EG” = EGamers, “CG” = CryptoGames, “TGW” = The Games Wiki.</p>
+      <table id="matrixTable"><thead><tr><th>Trophy</th><th>PP</th><th>KG</th><th>PG</th><th>GF</th><th>GS</th><th>EG</th><th>CG</th><th>TGW</th></tr></thead><tbody></tbody></table>
+    </div>
+  </section>
 </main>
 <footer>
-  <p>Leonida Ledger — an unofficial fan guide. Not affiliated with Rockstar Games. No official artwork, logos or game screenshots are used. All trophy names and descriptions are quoted as PlayStation publishes them. Guide text is original, written for this entry, with sources cited beside each trophy. Works fully offline.</p>
+  <p>Leonida Ledger — an unofficial fan guide. Grand Theft Auto and GTA are trademarks of their owners; this guide uses no Rockstar logo, artwork or game screenshots. All trophy names and descriptions are shown as PlayStation publishes them. Sources read 21 Nov 2026.</p>
 </footer>
-<script type="module" src="app.js"></script>
+<script src="app.js"></script>
 </body>
 </html>
